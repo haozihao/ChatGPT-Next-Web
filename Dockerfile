@@ -2,7 +2,7 @@ FROM node:18-alpine AS base
 
 FROM base AS deps
 
-RUN apk add --no-cache libc6-compat
+# RUN apk add --no-cache libc6-compat
 
 WORKDIR /app
 
@@ -13,10 +13,10 @@ RUN yarn install
 
 FROM base AS builder
 
-RUN apk update && apk add --no-cache git
+# RUN apk update && apk add --no-cache git
 
-ENV OPENAI_API_KEY=""
-ENV CODE=""
+# ENV OPENAI_API_KEY=""
+# ENV CODE=""
 
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
@@ -27,7 +27,7 @@ RUN yarn build
 FROM base AS runner
 WORKDIR /app
 
-RUN apk add proxychains-ng
+# RUN apk add proxychains-ng
 
 ENV PROXY_URL=""
 ENV OPENAI_API_KEY=""
