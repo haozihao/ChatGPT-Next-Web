@@ -24,6 +24,68 @@ function parseApiKey(bearToken: string) {
   };
 }
 
+export async function authLogin(req: NextRequest) {
+  let authToken = req.headers.get("Authorization") ?? "";
+  authToken = atob(authToken);
+  // 获取用户名密码
+  const strList = authToken.split("&");
+  if (strList.length < 2) {
+    console.log("[Auth] 账号或密码缺失，token：", authToken);
+    return {
+      error: true,
+      msg: "账号或密码缺失",
+    };
+  }
+  const userNmae = strList[0].split("=")[1];
+  const password = strList[1].split("=")[1];
+
+  if (!userNmae || !password) {
+    console.log("[Auth] 账号或密码不能为空，token：", authToken);
+    return {
+      error: true,
+      msg: "账号或密码不能为空",
+    };
+  }
+
+  const serverConfig = getServerSideConfig();
+  console.log("[Auth] userNmae: ", userNmae);
+  console.log("[Auth] password:", password);
+  console.log("[User IP] ", getIP(req));
+  console.log("[Time] ", new Date().toLocaleString());
+
+  const res = await fetch("http://localhost:8080/api/users/checkUser", {
+    body: JSON.stringify({
+      username: userNmae,
+      password: password,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+  });
+  const resJson = await res.json();
+  console.log("[checkUser] ", resJson);
+  if (!resJson.result) {
+    console.log("[Auth] 账号或密码不正确，token：", authToken);
+    return {
+      error: true,
+      msg: "账号或密码不正确",
+    };
+  }
+  console.log("[checkUser] ", "账号密码验证通过");
+  const serverApiKey = serverConfig.apiKey;
+  if (serverApiKey) {
+    console.log("[Auth] use system api key");
+    req.headers.set("Authorization", `${"Bearer "}${serverApiKey}`);
+  } else {
+    console.log("[Auth] admin did not provide an api key");
+  }
+
+  return {
+    error: false,
+  };
+}
+
 export function auth(req: NextRequest) {
   const authToken = req.headers.get("Authorization") ?? "";
 

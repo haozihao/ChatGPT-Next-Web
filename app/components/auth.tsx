@@ -20,6 +20,8 @@ export function AuthPage() {
     accessStore.update((access) => {
       access.openaiApiKey = "";
       access.accessCode = "";
+      access.username = "";
+      access.password = "";
     });
   }; // Reset access code to empty string
 
@@ -36,36 +38,31 @@ export function AuthPage() {
         <BotIcon />
       </div>
 
-      <div className={styles["auth-title"]}>{Locale.Auth.Title}</div>
-      <div className={styles["auth-tips"]}>{Locale.Auth.Tips}</div>
+      <div className={styles["auth-title"]}>{Locale.Auth.LoginTitle}</div>
+      <div className={styles["auth-tips"]}>{Locale.Auth.LoginTips}</div>
 
       <input
         className={styles["auth-input"]}
-        type="password"
-        placeholder={Locale.Auth.Input}
-        value={accessStore.accessCode}
+        type="text"
+        placeholder={Locale.Auth.UsernameInput}
+        value={accessStore.username}
         onChange={(e) => {
           accessStore.update(
-            (access) => (access.accessCode = e.currentTarget.value),
+            (access) => (access.username = e.currentTarget.value),
           );
         }}
       />
-      {!accessStore.hideUserApiKey ? (
-        <>
-          <div className={styles["auth-tips"]}>{Locale.Auth.SubTips}</div>
-          <input
-            className={styles["auth-input"]}
-            type="password"
-            placeholder={Locale.Settings.Access.OpenAI.ApiKey.Placeholder}
-            value={accessStore.openaiApiKey}
-            onChange={(e) => {
-              accessStore.update(
-                (access) => (access.openaiApiKey = e.currentTarget.value),
-              );
-            }}
-          />
-        </>
-      ) : null}
+      <input
+        className={styles["auth-input"]}
+        type="password"
+        placeholder={Locale.Auth.PasswordInput}
+        value={accessStore.password}
+        onChange={(e) => {
+          accessStore.update(
+            (access) => (access.password = e.currentTarget.value),
+          );
+        }}
+      />
 
       <div className={styles["auth-actions"]}>
         <IconButton

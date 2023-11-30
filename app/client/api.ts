@@ -133,24 +133,33 @@ export function getHeaders() {
     "x-requested-with": "XMLHttpRequest",
   };
 
-  const isAzure = accessStore.provider === ServiceProvider.Azure;
-  const authHeader = isAzure ? "api-key" : "Authorization";
-  const apiKey = isAzure ? accessStore.azureApiKey : accessStore.openaiApiKey;
+  // const isAzure = accessStore.provider === ServiceProvider.Azure;
+  // const authHeader = isAzure ? "api-key" : "Authorization";
+  // const apiKey = isAzure ? accessStore.azureApiKey : accessStore.openaiApiKey;
 
-  const makeBearer = (s: string) => `${isAzure ? "" : "Bearer "}${s.trim()}`;
-  const validString = (x: string) => x && x.length > 0;
+  // const makeBearer = (s: string) => `${isAzure ? "" : "Bearer "}${s.trim()}`;
+  // const validString = (x: string) => x && x.length > 0;
 
-  // use user's api key first
-  if (validString(apiKey)) {
-    headers[authHeader] = makeBearer(apiKey);
-  } else if (
-    accessStore.enabledAccessControl() &&
-    validString(accessStore.accessCode)
-  ) {
-    headers[authHeader] = makeBearer(
-      ACCESS_CODE_PREFIX + accessStore.accessCode,
-    );
-  }
+  // // use user's api key first
+  // if (validString(apiKey)) {
+  //   headers[authHeader] = makeBearer(apiKey);
+  // } else if (
+  //   accessStore.enabledAccessControl() &&
+  //   validString(accessStore.accessCode)
+  // ) {
+  //   headers[authHeader] = makeBearer(
+  //     ACCESS_CODE_PREFIX + accessStore.accessCode,
+  //   );
+  // }
+
+  const info =
+    "username=" +
+    accessStore.username +
+    "&" +
+    "password=" +
+    accessStore.password;
+
+  headers["Authorization"] = btoa(info);
 
   return headers;
 }

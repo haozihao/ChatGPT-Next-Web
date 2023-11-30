@@ -17,6 +17,8 @@ const DEFAULT_OPENAI_URL =
 const DEFAULT_ACCESS_STATE = {
   accessCode: "",
   useCustomConfig: false,
+  username: "",
+  password: "",
 
   provider: ServiceProvider.OpenAI,
 

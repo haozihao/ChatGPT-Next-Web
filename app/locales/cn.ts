@@ -17,6 +17,10 @@ const cn = {
     Input: "在此处填写访问码",
     Confirm: "确认",
     Later: "稍后再说",
+    LoginTitle: "需要账号密码",
+    LoginTips: "管理员开启了账号密码验证，请在下方填入账号密码",
+    UsernameInput: "在此处填写账号",
+    PasswordInput: "在此处填写密码",
   },
   ChatItem: {
     ChatItemCount: (count: number) => `${count} 条对话`,
@@ -441,9 +445,9 @@ const cn = {
     Config: "配置",
   },
   Exporter: {
-    Description : {
-      Title: "只有清除上下文之后的消息会被展示"
-    },  
+    Description: {
+      Title: "只有清除上下文之后的消息会被展示",
+    },
     Model: "模型",
     Messages: "消息",
     Topic: "主题",
