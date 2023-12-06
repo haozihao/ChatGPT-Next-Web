@@ -1,4 +1,4 @@
-import styles from "./auth.module.scss";
+import styles from "./register.module.scss";
 import { IconButton } from "./button";
 
 import { useNavigate } from "react-router-dom";
@@ -10,13 +10,12 @@ import BotIcon from "../icons/bot.svg";
 import { useEffect } from "react";
 import { getClientConfig } from "../config/client";
 
-export function AuthPage() {
+export function RegisterPage() {
   const navigate = useNavigate();
   const accessStore = useAccessStore();
 
   const goHome = () => navigate(Path.Home);
   const goChat = () => navigate(Path.Chat);
-  const goRegister = () => navigate(Path.Register);
   const resetAccessCode = () => {
     accessStore.update((access) => {
       access.openaiApiKey = "";
@@ -34,7 +33,7 @@ export function AuthPage() {
   }, []);
 
   return (
-    <div className={styles["auth-page"]}>
+    <div className={styles["register-page"]}>
 
       <div className={`no-dark ${styles["auth-logo"]}`}>
         <BotIcon />
@@ -73,9 +72,15 @@ export function AuthPage() {
           type="primary"
           onClick={goChat}
         />
+        {/* <IconButton
+            key=""
+            onClick={props.onClose}
+            text={Locale.UI.Confirm}
+            bordered
+          />, */}
         <IconButton
           text={Locale.Auth.Register}
-          onClick={goRegister}
+          onClick={goChat}
           bordered
         />
       </div>

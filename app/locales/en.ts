@@ -23,6 +23,20 @@ const en: LocaleType = {
     LoginTips: "The administrator has enabled account and password verification. Please fill in the account and password below.",
     UsernameInput: "Fill in account here",
     PasswordInput: "Fill in password here",
+    Register:"Register"
+  },
+  Register: {
+    Title: "Need Access Code",
+    Tips: "Welcome to ChatGPT LINX",
+    SubTips: "Or enter your OpenAI API Key",
+    Input: "access code",
+    Confirm: "Confirm",
+    Later: "Later",
+    LoginTitle: "Account and password required",
+    LoginTips: "The administrator has enabled account and password verification. Please fill in the account and password below.",
+    UsernameInput: "Fill in account here",
+    PasswordInput: "Fill in password here",
+    Register:"Register"
   },
   ChatItem: {
     ChatItemCount: (count: number) => `${count} messages`,
