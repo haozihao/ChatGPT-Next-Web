@@ -56,6 +56,13 @@ const MaskPage = dynamic(async () => (await import("./mask")).MaskPage, {
   loading: () => <Loading noLogo />,
 });
 
+const Register = dynamic(
+  async () => (await import("./register")).RegisterPage,
+  {
+    loading: () => <Loading noLogo />,
+  },
+);
+
 export function useSwitchTheme() {
   const config = useAppConfig();
 
@@ -128,8 +135,10 @@ function Screen() {
   const location = useLocation();
   const isHome = location.pathname === Path.Home;
   const isAuth = location.pathname === Path.Auth;
+  const isRegister = location.pathname === Path.Register;
   const isMobileScreen = useMobileScreen();
-  const shouldTightBorder = getClientConfig()?.isApp || (config.tightBorder && !isMobileScreen);
+  const shouldTightBorder =
+    getClientConfig()?.isApp || (config.tightBorder && !isMobileScreen);
 
   useEffect(() => {
     loadAsyncGoogleFont();
@@ -144,11 +153,17 @@ function Screen() {
         }`
       }
     >
-      {isAuth ? (
+      {isAuth && (
         <>
           <AuthPage />
         </>
-      ) : (
+      )}
+      {isRegister && (
+        <>
+          <RegisterPage />
+        </>
+      )}
+      {!isAuth && !isRegister && (
         <>
           <SideBar className={isHome ? styles["sidebar-show"] : ""} />
 

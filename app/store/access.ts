@@ -19,6 +19,7 @@ const DEFAULT_ACCESS_STATE = {
   useCustomConfig: false,
   username: "",
   password: "",
+  captchaCode: "",
 
   provider: ServiceProvider.OpenAI,
 
@@ -68,6 +69,36 @@ export const useAccessStore = createPersistStore(
         !this.enabledAccessControl() ||
         (this.enabledAccessControl() && ensure(get(), ["accessCode"]))
       );
+    },
+    async sendCaptcha() {
+      const res = await fetch("/api/user/sendCaptcha", {
+        body: JSON.stringify({
+          email: get().username,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+      });
+      const resJson = await res.json();
+      console.log("[SendCaptcha] ", resJson);
+      return resJson;
+    },
+    async registerUser() {
+      const res = await fetch("/api/user/register", {
+        body: JSON.stringify({
+          username: get().username,
+          password: get().password,
+          code: get().captchaCode,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+      });
+      const resJson = await res.json();
+      console.log("[registerUser] ", resJson);
+      return resJson;
     },
     fetch() {
       if (fetchState > 0 || getClientConfig()?.buildMode === "export") return;

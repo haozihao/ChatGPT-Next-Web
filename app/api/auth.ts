@@ -53,7 +53,7 @@ export async function authLogin(req: NextRequest) {
   console.log("[User IP] ", getIP(req));
   console.log("[Time] ", new Date().toLocaleString());
 
-  const res = await fetch("http://localhost:8080/api/users/checkUser", {
+  const res = await fetch(process.env.SEVER_API_URL + "/api/users/checkUser", {
     body: JSON.stringify({
       username: userNmae,
       password: password,
@@ -64,7 +64,7 @@ export async function authLogin(req: NextRequest) {
     method: "POST",
   });
   const resJson = await res.json();
-  console.log("[checkUser] ", resJson);
+  console.log("[CheckUser] ", resJson);
   if (!resJson.result) {
     console.log("[Auth] 账号或密码不正确，token：", authToken);
     return {
@@ -72,7 +72,7 @@ export async function authLogin(req: NextRequest) {
       msg: "账号或密码不正确",
     };
   }
-  console.log("[checkUser] ", "账号密码验证通过");
+  console.log("[CheckUser] ", "账号密码验证通过");
   const serverApiKey = serverConfig.apiKey;
   if (serverApiKey) {
     console.log("[Auth] use system api key");

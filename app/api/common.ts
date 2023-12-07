@@ -112,6 +112,11 @@ export async function requestOpenai(req: NextRequest) {
       headers: newHeaders,
     });
   } finally {
+    const clonedBody = await req.clone().json();
+    console.log(
+      "[SendMsg] 发送的问题: ",
+      clonedBody.messages[clonedBody.messages.length - 1],
+    );
     clearTimeout(timeoutId);
   }
 }
