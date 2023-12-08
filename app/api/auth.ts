@@ -69,7 +69,7 @@ export async function authLogin(req: NextRequest) {
     console.log("[Auth] 账号或密码不正确，token：", authToken);
     return {
       error: true,
-      msg: "账号或密码不正确",
+      msg: resJson.message || "账号或密码不正确",
     };
   }
   console.log("[CheckUser] ", "账号密码验证通过");

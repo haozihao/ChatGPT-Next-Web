@@ -45,7 +45,7 @@ export function RegisterPage() {
   }; // Reset access code to empty string
   const sendCode = async () => {
     if (!accessStore.username) {
-      toast.warn("请输入后邮箱后发送验证码！");
+      toast.warn("请输入邮箱后发送验证码！");
       return;
     }
     const res = await accessStore.sendCaptcha();
