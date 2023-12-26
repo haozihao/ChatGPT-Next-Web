@@ -54,6 +54,7 @@ export interface ChatSession {
   clearContextIndex?: number;
 
   mask: Mask;
+  imageUrl: string;
 }
 
 export const DEFAULT_TOPIC = Locale.Store.DefaultTopic;
@@ -77,6 +78,7 @@ function createEmptySession(): ChatSession {
     lastSummarizeIndex: 0,
 
     mask: createEmptyMask(),
+    imageUrl: "",
   };
 }
 
@@ -273,10 +275,25 @@ export const useChatStore = createPersistStore(
         const userContent = fillTemplateWith(content, modelConfig);
         console.log("[User Input] after template: ", userContent);
 
-        const userMessage: ChatMessage = createMessage({
-          role: "user",
-          content: userContent,
-        });
+        let userMessage: ChatMessage;
+        if (session.imageUrl) {
+          userMessage = createMessage({
+            role: "user",
+            content: [
+              { type: "text", text: userContent },
+              {
+                type: "image_url",
+                image_url: session.imageUrl,
+              },
+            ],
+          });
+        } else {
+          userMessage = createMessage({
+            role: "user",
+            content: userContent,
+          });
+        }
+        session.imageUrl = "";
 
         const botMessage: ChatMessage = createMessage({
           role: "assistant",
@@ -293,7 +310,6 @@ export const useChatStore = createPersistStore(
         get().updateCurrentSession((session) => {
           const savedUserMessage = {
             ...userMessage,
-            content,
           };
           session.messages = session.messages.concat([
             savedUserMessage,

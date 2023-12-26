@@ -1,5 +1,9 @@
-export function estimateTokenLength(input: string): number {
+export function estimateTokenLength(input: any): number {
   let tokenLength = 0;
+
+  if (typeof input !== "string") {
+    input = input[0].text;
+  }
 
   for (let i = 0; i < input.length; i++) {
     const charCode = input.charCodeAt(i);

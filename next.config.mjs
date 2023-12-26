@@ -28,6 +28,7 @@ const nextConfig = {
   },
   output: mode,
   images: {
+    domains: ['localhost','192.168.43.35'],
     unoptimized: mode === "export",
   },
   experimental: {

@@ -6,6 +6,7 @@ import React, {
   useMemo,
   useCallback,
   Fragment,
+  ChangeEvent,
 } from "react";
 
 import SendWhiteIcon from "../icons/send-white.svg";
@@ -34,6 +35,7 @@ import AutoIcon from "../icons/auto.svg";
 import BottomIcon from "../icons/bottom.svg";
 import StopIcon from "../icons/pause.svg";
 import RobotIcon from "../icons/robot.svg";
+import Add from "../icons/add.svg";
 
 import {
   ChatMessage,
@@ -73,6 +75,7 @@ import {
   showPrompt,
   showToast,
 } from "./ui-lib";
+import Image from "next/image";
 import { useNavigate } from "react-router-dom";
 import {
   CHAT_PAGE_SIZE,
@@ -430,6 +433,7 @@ export function ChatActions(props: {
   const stopAll = () => ChatControllerPool.stopAll();
 
   // switch model
+  const imageUrl = chatStore.currentSession().imageUrl;
   const currentModel = chatStore.currentSession().mask.modelConfig.model;
   const allModels = useAllModels();
   const models = useMemo(
@@ -437,7 +441,42 @@ export function ChatActions(props: {
     [allModels],
   );
   const [showModelSelector, setShowModelSelector] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const handleButtonClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // 在这里可以执行上传逻辑，将文件上传至指定接口
+      console.log("Selected file:", file);
+      try {
+        const data = new FormData();
+        data.set("file", file);
 
+        const res = await fetch("/api/common/upload", {
+          method: "POST",
+          body: data,
+        });
+        const resJson = await res.json();
+        console.log("[upload] ", resJson);
+        if (resJson.result) {
+          chatStore.updateCurrentSession((session) => {
+            session.imageUrl = resJson.imageUrl;
+          });
+        } else {
+          chatStore.updateCurrentSession((session) => {
+            session.imageUrl = "";
+          });
+        }
+      } catch (e: any) {
+        // Handle errors here
+        console.error(e);
+      }
+    }
+  };
   useEffect(() => {
     // if current model is not available
     // switch to first available model
@@ -538,6 +577,7 @@ export function ChatActions(props: {
           onSelection={(s) => {
             if (s.length === 0) return;
             chatStore.updateCurrentSession((session) => {
+              session.imageUrl = "";
               session.mask.modelConfig.model = s[0] as ModelType;
               session.mask.syncGlobalConfig = false;
             });
@@ -545,6 +585,29 @@ export function ChatActions(props: {
           }}
         />
       )}
+      {currentModel == "gpt-4-1106-preview" && (
+        <ChatAction
+          onClick={handleButtonClick}
+          text={"选择提问图片"}
+          icon={<Add />}
+        />
+      )}
+      <span
+        style={{
+          fontSize: 12,
+          color: "blue",
+          alignSelf: "center",
+          marginLeft: "auto",
+        }}
+      >
+        {imageUrl}
+      </span>
+      <input
+        type="file"
+        ref={fileInputRef}
+        style={{ display: "none" }}
+        onChange={handleFileChange}
+      />
     </div>
   );
 }
@@ -1232,8 +1295,21 @@ function _Chat() {
                     </div>
                   )}
                   <div className={styles["chat-message-item"]}>
+                    {typeof message.content !== "string" && (
+                      <Image
+                        src={message.content[1].image_url}
+                        alt="Landscape picture"
+                        width={200}
+                        height={200}
+                        layout="responsive"
+                      />
+                    )}
                     <Markdown
-                      content={message.content}
+                      content={
+                        typeof message.content === "string"
+                          ? message.content
+                          : message.content[0].text
+                      }
                       loading={
                         (message.preview || message.streaming) &&
                         message.content.length === 0 &&
