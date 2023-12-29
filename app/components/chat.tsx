@@ -585,7 +585,7 @@ export function ChatActions(props: {
           }}
         />
       )}
-      {currentModel == "gpt-4-1106-preview" && (
+      {currentModel == "gpt-4-vision-preview" && (
         <ChatAction
           onClick={handleButtonClick}
           text={"选择提问图片"}
