@@ -20,23 +20,20 @@ const en: LocaleType = {
     Confirm: "Confirm",
     Later: "Later",
     LoginTitle: "Account and password required",
-    LoginTips: "The administrator has enabled account and password verification. Please fill in the account and password below.",
+    LoginTips:
+      "The administrator has enabled account and password verification. Please fill in the account and password below.",
     UsernameInput: "Fill in account here",
     PasswordInput: "Fill in password here",
-    Register:"Register"
+    Register: "Register",
   },
   Register: {
-    Title: "Need Access Code",
-    Tips: "Welcome to ChatGPT LINX",
-    SubTips: "Or enter your OpenAI API Key",
-    Input: "access code",
-    Confirm: "Confirm",
-    Later: "Later",
-    LoginTitle: "Account and password required",
-    LoginTips: "The administrator has enabled account and password verification. Please fill in the account and password below.",
-    UsernameInput: "Fill in account here",
-    PasswordInput: "Fill in password here",
-    Register:"Register"
+    Title: "Register an account",
+    UsernameInput: "Fill in your email here",
+    PasswordInput: "Fill in your password here",
+    CodeInput: "Fill in the verification code here",
+    Captcha: "Send verification code",
+    Confirm: "Register",
+    Later: "Return to login",
   },
   ChatItem: {
     ChatItemCount: (count: number) => `${count} messages`,
@@ -461,8 +458,8 @@ const en: LocaleType = {
   },
   Exporter: {
     Description: {
-      Title: "Only messages after clearing the context will be displayed"
-    },  
+      Title: "Only messages after clearing the context will be displayed",
+    },
     Model: "Model",
     Messages: "Messages",
     Topic: "Topic",
