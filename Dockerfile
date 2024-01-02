@@ -28,10 +28,12 @@ FROM base AS runner
 WORKDIR /app
 
 # RUN apk add proxychains-ng
+ENV SEVER_API_URL="http://43.134.87.149:8080"
 
 ENV PROXY_URL=""
 ENV OPENAI_API_KEY=""
 ENV CODE=""
+
 
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
