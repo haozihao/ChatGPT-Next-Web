@@ -62,5 +62,13 @@
   },
   "resolutions": {
     "lint-staged/yaml": "^2.2.2"
-  }
+  },
+  "description": "<div align=\"center\">\r <img src=\"./docs/images/icon.svg\" alt=\"icon\"/>",
+  "version": "1.0.0",
+  "main": ".prettierrc.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "keywords": [],
+  "author": ""
 }
