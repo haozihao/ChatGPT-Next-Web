@@ -759,8 +759,25 @@ function _Chat() {
     }
   };
 
-  const doSubmit = (userInput: string) => {
+  const doSubmit = async (userInput: string) => {
     if (userInput.trim() === "") return;
+
+    const res = await fetch("/api/common/audit", {
+      body: JSON.stringify({
+        content: userInput,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+    });
+    const resJson = await res.json();
+    console.log("[audit] ", resJson);
+    if (!resJson.result) {
+      showToast("发送问题中有敏感词，请检查！");
+      return;
+    }
+
     const matchCommand = chatCommands.match(userInput);
     if (matchCommand.matched) {
       setUserInput("");

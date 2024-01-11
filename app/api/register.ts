@@ -53,7 +53,7 @@ export async function getCode(req: NextRequest) {
   console.log("[User IP] ", getIP(req));
   console.log("[Time] ", new Date().toLocaleString());
 
-  const res = await fetch("http://43.134.87.149:8080/api/users/checkUser", {
+  const res = await fetch(process.env.SEVER_API_URL + "/api/users/checkUser", {
     body: JSON.stringify({
       username: userNmae,
       password: password,
