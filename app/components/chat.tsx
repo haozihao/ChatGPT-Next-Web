@@ -686,6 +686,7 @@ function _Chat() {
 
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [userInput, setUserInput] = useState("");
+  const [isAuditLoading, setIsAuditLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { submitKey, shouldSubmit } = useSubmitHandler();
   const { scrollRef, setAutoScroll, scrollDomToBottom } = useScrollToBottom();
@@ -762,22 +763,6 @@ function _Chat() {
   const doSubmit = async (userInput: string) => {
     if (userInput.trim() === "") return;
 
-    const res = await fetch("/api/common/audit", {
-      body: JSON.stringify({
-        content: userInput,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-    });
-    const resJson = await res.json();
-    console.log("[audit] ", resJson);
-    if (!resJson.result) {
-      showToast("发送问题中有敏感词，请检查！");
-      return;
-    }
-
     const matchCommand = chatCommands.match(userInput);
     if (matchCommand.matched) {
       setUserInput("");
@@ -785,13 +770,34 @@ function _Chat() {
       matchCommand.invoke();
       return;
     }
-    setIsLoading(true);
-    chatStore.onUserInput(userInput).then(() => setIsLoading(false));
-    localStorage.setItem(LAST_INPUT_KEY, userInput);
-    setUserInput("");
-    setPromptHints([]);
-    if (!isMobileScreen) inputRef.current?.focus();
-    setAutoScroll(true);
+    try {
+      setIsAuditLoading(true);
+
+      const res = await fetch("/api/common/audit", {
+        body: JSON.stringify({
+          content: userInput,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+      });
+      const resJson = await res.json();
+      console.log("[audit] ", resJson);
+      if (!resJson.result) {
+        showToast("发送问题中有敏感词，请检查！");
+        return;
+      }
+      setIsLoading(true);
+      chatStore.onUserInput(userInput).then(() => setIsLoading(false));
+      localStorage.setItem(LAST_INPUT_KEY, userInput);
+      setUserInput("");
+      setPromptHints([]);
+      if (!isMobileScreen) inputRef.current?.focus();
+      setAutoScroll(true);
+    } finally {
+      setIsAuditLoading(false);
+    }
   };
 
   const onPromptSelect = (prompt: RenderPompt) => {
@@ -848,6 +854,10 @@ function _Chat() {
   // check if should send message
   const onInputKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     // if ArrowUp and no userInput, fill with last input
+    if (isAuditLoading) {
+      e.preventDefault();
+      return;
+    }
     if (
       e.key === "ArrowUp" &&
       userInput.length <= 0 &&
