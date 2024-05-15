@@ -585,7 +585,7 @@ export function ChatActions(props: {
           }}
         />
       )}
-      {currentModel == "gpt-4-vision-preview" && (
+      {currentModel == "gpt-4o" && (
         <ChatAction
           onClick={handleButtonClick}
           text={"选择提问图片"}
@@ -1324,7 +1324,7 @@ function _Chat() {
                   <div className={styles["chat-message-item"]}>
                     {typeof message.content !== "string" && (
                       <Image
-                        src={message.content[1].image_url}
+                        src={message.content[1].image_url.url}
                         alt="Landscape picture"
                         width={200}
                         height={200}

@@ -283,7 +283,9 @@ export const useChatStore = createPersistStore(
               { type: "text", text: userContent },
               {
                 type: "image_url",
-                image_url: session.imageUrl,
+                image_url: {
+                  url: session.imageUrl,
+                },
               },
             ],
           });
