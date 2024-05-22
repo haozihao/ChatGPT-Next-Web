@@ -20,6 +20,7 @@ export enum Path {
   Masks = "/masks",
   Auth = "/auth",
   Register = "/register",
+  ImageGenerate = "/image-generate",
 }
 
 export enum ApiPath {

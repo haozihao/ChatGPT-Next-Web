@@ -55,6 +55,8 @@ export interface ChatSession {
 
   mask: Mask;
   imageUrl: string;
+  imageBase64: string;
+  imageContent: string;
 }
 
 export const DEFAULT_TOPIC = Locale.Store.DefaultTopic;
@@ -79,6 +81,8 @@ function createEmptySession(): ChatSession {
 
     mask: createEmptyMask(),
     imageUrl: "",
+    imageBase64: "",
+    imageContent: "",
   };
 }
 

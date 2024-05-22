@@ -63,6 +63,13 @@ const Register = dynamic(
   },
 );
 
+const ImageGenerate = dynamic(
+  async () => (await import("./image-generate")).ImageGenerate,
+  {
+    loading: () => <Loading noLogo />,
+  },
+);
+
 export function useSwitchTheme() {
   const config = useAppConfig();
 
@@ -136,6 +143,7 @@ function Screen() {
   const isHome = location.pathname === Path.Home;
   const isAuth = location.pathname === Path.Auth;
   const isRegister = location.pathname === Path.Register;
+  const isImage = location.pathname === Path.ImageGenerate;
   const isMobileScreen = useMobileScreen();
   const shouldTightBorder =
     getClientConfig()?.isApp || (config.tightBorder && !isMobileScreen);
@@ -163,7 +171,12 @@ function Screen() {
           <RegisterPage />
         </>
       )}
-      {!isAuth && !isRegister && (
+      {isImage && (
+        <>
+          <ImageGenerate />
+        </>
+      )}
+      {!isAuth && !isRegister && !isImage && (
         <>
           <SideBar className={isHome ? styles["sidebar-show"] : ""} />
 

@@ -138,6 +138,15 @@ const cn = {
     DeleteToast: "已删除会话",
     Revert: "撤销",
   },
+  ImageChat: {
+    MainTitle: "图片生成",
+    SubTitle: "根据输入文本生成图片",
+    Placeholder: "请输入图片生成描述",
+    Actions: {
+      Generate: "生成",
+      Download: "下载",
+    },
+  },
   Settings: {
     Title: "设置",
     SubTitle: "所有设置选项",

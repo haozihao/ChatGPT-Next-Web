@@ -142,6 +142,15 @@ const en: LocaleType = {
     DeleteToast: "Chat Deleted",
     Revert: "Revert",
   },
+  ImageChat: {
+    MainTitle: "Picture generation",
+    SubTitle: "Generate an image based on the input text",
+    Placeholder: "Please enter an image to generate a description",
+    Actions: {
+      Generate: "generate",
+      Download: "download",
+    },
+  },
   Settings: {
     Title: "Settings",
     SubTitle: "All Settings",

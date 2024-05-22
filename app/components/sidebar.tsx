@@ -225,6 +225,16 @@ export function SideBar(props: { className?: string }) {
         <div>
           <IconButton
             icon={<AddIcon />}
+            text={shouldNarrow ? undefined : Locale.ImageChat.MainTitle}
+            onClick={() => {
+              navigate(Path.ImageGenerate);
+            }}
+            shadow
+          />
+        </div>
+        <div>
+          <IconButton
+            icon={<AddIcon />}
             text={shouldNarrow ? undefined : Locale.Home.NewChat}
             onClick={() => {
               if (config.dontShowMaskSplashScreen) {
