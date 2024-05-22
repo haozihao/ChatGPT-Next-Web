@@ -206,8 +206,9 @@ export function ImageGenerate() {
         ) : (
           base64Data && (
             <Image
+              className={styles["chat-image"]}
               src={`data:image/jpeg;base64,${base64Data}`}
-              alt="Landscape picture"
+              alt="chat generate picture"
               width={200}
               height={200}
               layout="responsive"

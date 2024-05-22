@@ -525,3 +525,9 @@
   height: 100%;
   width: 100%;
 }
+
+.chat-image {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+}
